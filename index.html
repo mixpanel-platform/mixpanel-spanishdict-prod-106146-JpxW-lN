@@ -46,15 +46,36 @@
         if (eventName) {
           MP.api.segment(eventName, propName, params).done(function(results) {
             processResults(results.values());
-            //eventGraph.MPChart('setData', results);
-            //eventTable.MPTable('setData', results);
           });
         }
       };
       
       var processResults = function(data) {
+        var finalResults = {};
+        var outside = 0;
         console.log(data);
-        //var keys = 
+        var names = Object.keys(data);
+        for(i=0; i<names.length; i++){
+          finalResults[names[i]] = {};
+          var dates = Object.keys(data[names[i]]);
+          for(j=0; j<dates.length; j++) {
+            if(dates[j].toISOString().substring(0, 3) == '2013') {
+              finalResults[names[i]]['2013-01-01'] += data[names[i]][dates[j]];
+            }
+            else if(dates[j].toISOString().substring(0, 3) == '2013') {
+              finalResults[names[i]]['2014-01-01'] += data[names[i]][dates[j]];
+            }
+            else if(dates[j].toISOString().substring(0, 3) == '2013') {
+              finalResults[names[i]]['2015-01-01'] += data[names[i]][dates[j]];
+            }
+            else {
+              outside += 1;
+            }
+          }
+        }
+        console.log(finalResults);
+        eventGraph.MPChart('setData', finalResults);
+        eventTable.MPTable('setData', finalResults);
       }
       
       eventSelect.on('change', function(e, eventName) {
