@@ -57,6 +57,9 @@
         var names = Object.keys(data);
         for(i=0; i<names.length; i++){
           finalResults[names[i]] = {};
+          finalResults[names[i]]['2013-01-01'] = 0;
+          finalResults[names[i]]['2014-01-01'] = 0;
+          finalResults[names[i]]['2015-01-01'] = 0;
           var dates = Object.keys(data[names[i]]);
           for(j=0; j<dates.length; j++) {
             console.log(dates[j].substring(0, 4));
