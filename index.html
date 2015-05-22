@@ -25,19 +25,38 @@
         showPercentages: true,
         firstColHeader: 'Event'
       });
+      
+      var params = {
+        from: moment().subtract(30, 'days'),    // the earliest date you'd like to include in the query
+        to: moment(),                           // the latest date you'd like to include in the query
+        type: 'general',                        // analysis type for the data, can be 'general', 'unique', or 'average'
+        unit: 'month'                            // level of granularity of the data, can be 'minute', 'hour', 'day', or 'month'
+      }
 
       var runQuery = function() {
         var eventName = eventSelect.MPEventSelect('value'),
             propName  = propSelect.MPPropertySelect('value'),
             dateRange = dateSelect.MPDatepicker('value');
+        
+        // if(current_date.toISOString().substring(9, 10) == '1'
+        
+        params['from'] = dateRange.from.toISOString().substring(0, 10);
+        params['to'] = dateRange.to.toISOString().substring(0, 10);
 
         if (eventName) {
-          MP.api.segment(eventName, propName, dateRange).done(function(results) {
-            eventGraph.MPChart('setData', results);
-            eventTable.MPTable('setData', results);
+          MP.api.segment(eventName, propName, params).done(function(results) {
+            processResults(results.values());
+            //eventGraph.MPChart('setData', results);
+            //eventTable.MPTable('setData', results);
           });
         }
       };
+      
+      var processResults = function(data) {
+        console.log(data);
+        //var keys = 
+      }
+      
       eventSelect.on('change', function(e, eventName) {
         propSelect.MPPropertySelect('setEvent', eventName);
         $("#by").show();
