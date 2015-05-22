@@ -59,6 +59,7 @@
           finalResults[names[i]] = {};
           var dates = Object.keys(data[names[i]]);
           for(j=0; j<dates.length; j++) {
+            console.log(dates[j].substring(0, 3));
             if(dates[j].substring(0, 3) == '2013') {
               finalResults[names[i]]['2013-01-01'] += data[names[i]][dates[j]];
             }
